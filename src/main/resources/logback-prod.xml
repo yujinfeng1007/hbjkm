@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+
+    <!-- 日志等级 ERROR > WARN > INFO > DEBUG-->
+    <!-- onMatch="ACCEPT" 表示匹配该级别及以上-->
+    <!-- onMatch="DENY" 表示不匹配该级别及以上-->
+    <!-- onMatch="NEUTRAL" 表示该级别及以上的，由下一个filter处理，如果当前是最后一个，则表示匹配该级别及以上-->
+    <!-- onMismatch="ACCEPT" 表示匹配该级别以下-->
+    <!-- onMismatch="NEUTRAL" 表示该级别及以下的，由下一个filter处理，如果当前是最后一个，则不匹配该级别以下的-->
+    <!-- onMismatch="DENY" 表示不匹配该级别以下的-->
+    <!--日志输出路径-->
+
+    <logger name="com.codest.aggregatedisk" value="DEBUG"/>
+    <logger name="org.hibernate.sql" value="DEBUG"/>
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" value="TRACE"/>
+
+    <!-- 配置日志存放路径-->
+    <property name="LOG_HOME" value="/var/applogs"/>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%black(%d{yyyy-MM-dd HH:mm:ss} [%thread] %highlight(%-5level) %logger- %msg%n)</pattern>
+        </layout>
+    </appender>
+
+    <appender name="debug" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 过滤日志 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>NEUTRAL</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm} [%thread] %-5level %logger- %msg%n</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+        <!-- 滚动策略 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 设置info日志路径 -->
+            <fileNamePattern>${LOG_HOME}/[DEBUG]%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 过滤日志 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>NEUTRAL</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm} [%thread] %-5level %logger- %msg%n</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+        <!-- 滚动策略 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 设置info日志路径 -->
+            <fileNamePattern>${LOG_HOME}/[INFO]%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="warn" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 过滤日志 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>NEUTRAL</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm} [%thread] %-5level %logger- %msg%n</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+        <!-- 滚动策略 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 设置info日志路径 -->
+            <fileNamePattern>${LOG_HOME}/[WARN]%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 过滤日志 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>NEUTRAL</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm} [%thread] %-5level %logger- %msg%n</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+        <!-- 滚动策略 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 设置info日志路径 -->
+            <fileNamePattern>${LOG_HOME}/[ERROR]%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 设置默认日志级别为INFO -->
+    <root level="info">
+        <appender-ref ref="console"/>
+        <appender-ref ref="debug"/>
+        <appender-ref ref="info"/>
+        <appender-ref ref="warn"/>
+        <appender-ref ref="error"/>
+    </root>
+</configuration>
